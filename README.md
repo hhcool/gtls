@@ -40,6 +40,9 @@ func main() {
 2021-11-22 16:22:20 [INFO] 日志保存期限    [30]
 ```
 
+#### mth 小数计算
+
+#### tm 时间快捷方法
 
 #### cron 定时任务
 > 对github.com/gogf/gf/os/gcron的简单封装
