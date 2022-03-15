@@ -1,4 +1,4 @@
-package gtls
+package tm
 
 import "time"
 
