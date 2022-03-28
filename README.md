@@ -83,7 +83,6 @@ Md5(v string)
 
 #### rds Redis库的封装
 > 给redis套了个壳，主要是实现同一份代码同时兼容单体Redis和集群
-> 只支持单实例，本人暂无多实例的需求
 
 ##### string
 - [x] set(key, value)             给数据库中名称为key的string赋予值value
