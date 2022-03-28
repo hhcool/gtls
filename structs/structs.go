@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	DefaultTagName = "json" // struct's field default tag name
+	DefaultTagName = "json" // struct的field默认tag名
 )
 
 type Struct struct {
