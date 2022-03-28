@@ -125,3 +125,19 @@ func SliceChunk(src []string, chunkSize int) (chunks [][]string) {
 	}
 	return
 }
+
+// RemoveDuplicateElement
+// @Description: 切片数组去重
+// @param s
+// @return string[]
+func RemoveDuplicateElement(s []string) []string {
+	result := make([]string, 0, len(s))
+	temp := map[string]struct{}{}
+	for _, item := range s {
+		if _, ok := temp[item]; !ok {
+			temp[item] = struct{}{}
+			result = append(result, item)
+		}
+	}
+	return result
+}
