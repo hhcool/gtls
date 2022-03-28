@@ -33,3 +33,8 @@ func FloatDiv(d1, d2 float64) float64 {
 	float64Result, _ := decimalResult.Float64()
 	return float64Result
 }
+
+func Round(num float64, round int32) float64 {
+	d, _ := decimal.NewFromFloat(num).Round(round).Float64()
+	return d
+}
