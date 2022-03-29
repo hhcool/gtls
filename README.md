@@ -30,11 +30,6 @@ func main() {
 #### cron 定时任务
 > 对github.com/gogf/gf/os/gcron的简单封装
 
-- 如果需要对任务定检
-```
-// 执行后每10秒打印一次执行中的任务
-cron.New(time.Second*10)
-```
 - 注册一个任务
 ``` 
 // CRON和0001会组成任务的唯一ID
