@@ -2,43 +2,25 @@
 
 #### log 日志库 
 > - 实现日志滚动落盘功能
-> - 解决logrus报错 bufio.Scanner: token too long
 
-- 引用的库
-```
-"github.com/antonfisher/nested-logrus-formatter"
-"github.com/lestrrat-go/file-rotatelogs"
-"github.com/rifflock/lfshook"
-"github.com/sirupsen/logrus"
-```
 - 使用方式
 ```
 package main
 import "github.com/hhcool/gtls/log"
 
 func main() {
-	log.EnableFile(log.Option{
-		Path:"./logs",
-		MaxAge: 30,
+	log.EnableSync(log.Option{
+		ServerId string // 服务ID
+        Format   Format // 日志类型
+        Path     string // 日志文件路径，如果不传，不会存文件
+        MaxAge   int    // 日志文件的生命周期，单位天
     })
-	
-	// Entry.writerScanner: token too long
-	// log.SafeWriterLevel(logger *logrus.Logger, level logrus.Level) *io.PipeWriter
-	
-	// 访问logrus.Logger
-	// log.Logger
 }
 
 // 获取一个安全的io.Write
-// o.Write = log.SafeWriterLevel(log.Logger, 4)
+// o.Write = log.SafeWriter()
 ```
-- 打印格式
-```
-2021-11-22 16:22:20 [INFO] 初始化日志库    [ok]
-2021-11-22 16:22:20 [INFO] 加载配置文件    [config.dev.yaml]
-2021-11-22 16:22:20 [INFO] 日志保存路径    [log/logs]
-2021-11-22 16:22:20 [INFO] 日志保存期限    [30]
-```
+
 
 #### mth 小数计算
 
