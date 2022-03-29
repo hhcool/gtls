@@ -9,8 +9,9 @@ package main
 import "github.com/hhcool/gtls/log"
 
 func main() {
-	log.EnableSync(log.Option{
-		ServerId string // 服务ID
+    // 同步日志到其他输出，如文件
+    log.EnableSync(log.Option{
+        ServerId string // 服务ID
         Format   Format // 日志类型
         Path     string // 日志文件路径，如果不传，不会存文件
         MaxAge   int    // 日志文件的生命周期，单位天
