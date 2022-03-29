@@ -2,6 +2,7 @@ package rds
 
 import (
 	"github.com/hhcool/gtls/log"
+	"go.uber.org/zap"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -35,7 +36,7 @@ func (r *ClientStruct) UnLock(key string) {
 		end
 	`)
 	if result, err := r.RunScript(script, key, NewGoroutineId()).Result(); err != nil || result == int64(0) {
-		log.Error("解锁失败：", err)
+		log.Error("解锁失败", zap.Error(err))
 	} else {
 		unlockCh <- struct{}{}
 	}
