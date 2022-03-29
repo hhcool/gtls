@@ -27,22 +27,6 @@ func main() {
 
 #### tm 时间快捷方法
 
-#### cron 定时任务
-> 对github.com/gogf/gf/os/gcron的简单封装
-
-- 注册一个任务
-``` 
-// CRON和0001会组成任务的唯一ID
-RunCron("CRON", "0001", "0 0 * * * * ?", fc)
-
-// 第三个参数如果是数字，则默认单位是m，也可以直接传 1s 1h 1d 等。
-RunInterval("CRON", "0001", 1, fc)
-
-// 移除任务
-Remove("CRON", "0001")
-```
-
-
 
 #### structs 针对struct的工具包
 - 基于github.com/fatih/structs的分支包，感谢原作者
