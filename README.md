@@ -20,6 +20,11 @@ func main() {
 
 // 获取一个安全的io.Write
 // o.Write = log.SafeWriter()
+
+// gorm日志
+gorm.Config{
+    Logger: log.NewGormLogger(),
+}
 ```
 
 
