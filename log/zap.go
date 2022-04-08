@@ -24,10 +24,12 @@ var (
 )
 
 type Option struct {
-	ServerId string
-	Format   Format
-	Path     string
-	MaxAge   int
+	ServerId   string
+	Format     Format
+	Path       string
+	MaxAge     int
+	CallerSkip int
+	Stacktrace zapcore.Level
 }
 
 func (o *Option) init() {
@@ -62,8 +64,8 @@ func EnableSync(option *Option) {
 		zapcore.NewTee(cores...),
 	).WithOptions(
 		zap.AddCaller(),
-		zap.AddCallerSkip(1),
-		zap.AddStacktrace(zapcore.ErrorLevel),
+		zap.AddCallerSkip(option.CallerSkip),
+		zap.AddStacktrace(option.Stacktrace),
 		zap.Fields(
 			zap.String("server", option.ServerId),
 			zap.Namespace("detail"),
@@ -108,6 +110,7 @@ func baseEncoderConfig() zapcore.EncoderConfig {
 func consoleEncoder() zapcore.Core {
 	cfg := baseEncoderConfig()
 	cfg.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	cfg.EncodeName = zapcore.FullNameEncoder
 	return zapcore.NewCore(
 		zapcore.NewConsoleEncoder(cfg),
 		zapcore.AddSync(zapcore.Lock(os.Stdout)),

@@ -17,14 +17,19 @@ type GormLogger struct {
 	SkipCallerLookup          bool
 	IgnoreRecordNotFoundError bool
 }
+type GormOption struct {
+	SlowThreshold             time.Duration
+	SkipCallerLookup          bool
+	IgnoreRecordNotFoundError bool
+}
 
-func NewGormLogger() GormLogger {
+func NewGormLogger(option *GormOption) GormLogger {
 	log := GormLogger{
 		ZapLogger:                 logger,
 		LogLevel:                  gl.Warn,
-		SlowThreshold:             100 * time.Millisecond,
-		SkipCallerLookup:          false,
-		IgnoreRecordNotFoundError: false,
+		SlowThreshold:             option.SlowThreshold,
+		SkipCallerLookup:          option.SkipCallerLookup,
+		IgnoreRecordNotFoundError: option.IgnoreRecordNotFoundError,
 	}
 	gl.Default = log
 	return log
@@ -77,8 +82,3 @@ func (l GormLogger) Trace(ctx context.Context, begin time.Time, fc func() (strin
 		Debug("trace", zap.Duration("elapsed", elapsed), zap.Int64("rows", rows), zap.String("sql", sql))
 	}
 }
-
-//
-//func (l GormLogger) logger() *zap.Logger {
-//	return l.ZapLogger.WithOptions(zap.AddCallerSkip(2))
-//}
