@@ -24,7 +24,7 @@ var (
 )
 
 type Option struct {
-	ServerId   string
+	ServerName string
 	Format     Format
 	Path       string
 	MaxAge     int
@@ -33,12 +33,9 @@ type Option struct {
 }
 
 func (o *Option) init() {
-	if o.ServerId == "" {
-		Panic("serverId 不可为空")
-	}
 	if o.Path != "" {
-		if !strings.HasSuffix(o.Path, ".log") {
-			o.Path = fmt.Sprintf("%s/%s.log", o.Path, o.ServerId)
+		if !strings.HasSuffix(o.Path, o.ServerName) {
+			o.Path = fmt.Sprintf("%s/%s", o.Path, o.ServerName)
 		}
 		if o.MaxAge == 0 {
 			o.MaxAge = 30
@@ -67,7 +64,7 @@ func EnableSync(option *Option) {
 		zap.AddCallerSkip(option.CallerSkip),
 		zap.AddStacktrace(option.Stacktrace),
 		zap.Fields(
-			zap.String("server", option.ServerId),
+			zap.String("server", option.ServerName),
 			zap.Namespace("detail"),
 		),
 	)
@@ -127,13 +124,11 @@ func fileEncoder(option *Option) zapcore.Core {
 	cfg.EncodeLevel = zapcore.CapitalLevelEncoder
 	d, _ := time.ParseDuration(fmt.Sprintf("%dd", option.MaxAge))
 	writer, _ := rotate.New(
-		fmt.Sprintf("%s.%%Y%%m%%d%%H%%M", option.Path),
-		rotate.WithLinkName(option.Path),
+		fmt.Sprintf("%s/%%Y%%m%%d%%H%%M.log", option.Path),
+		rotate.WithLinkName(option.Path+"/latest.log"),
 		rotate.WithMaxAge(d),
 		rotate.WithRotationTime(24*time.Hour),
 	)
-	Infof("%-10s[%s]", "日志保存路径", option.Path)
-	Infof("%-10s[%d]", "日志保存期限", option.MaxAge)
 	return zapcore.NewCore(
 		zapcore.NewJSONEncoder(cfg),
 		zapcore.AddSync(writer),
