@@ -46,7 +46,7 @@ func NewRedis(o *Option) {
 			panic(err)
 		} else {
 			Client.setClient(client)
-			log.Infof("%-10s[%s]", "初始化缓存库", "Single")
+			log.Infof("初始化缓存库 单体")
 		}
 	case 2:
 		cluster := redis.NewClusterClient(&redis.ClusterOptions{
@@ -58,7 +58,7 @@ func NewRedis(o *Option) {
 		} else {
 			Client.setCluster(cluster)
 			Client.IsCluster = true
-			log.Infof("%-10s[%s]", "初始化缓存库", "Cluster")
+			log.Infof("初始化缓存库 集群")
 		}
 	case 3:
 		client := redis.NewFailoverClient(&redis.FailoverOptions{
@@ -71,7 +71,7 @@ func NewRedis(o *Option) {
 			panic(err)
 		} else {
 			Client.setClient(client)
-			log.Infof("%-10s[%s]", "初始化缓存库", "Failover")
+			log.Infof("初始化缓存库 哨兵")
 		}
 	default:
 		if len(o.Host) > 1 {
