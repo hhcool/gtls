@@ -63,10 +63,6 @@ func EnableSync(option *Option) {
 		zap.AddCaller(),
 		zap.AddCallerSkip(option.CallerSkip),
 		zap.AddStacktrace(option.Stacktrace),
-		zap.Fields(
-			zap.String("server", option.ServerName),
-			zap.Namespace("detail"),
-		),
 	)
 	sugar = logger.Sugar()
 	zap.ReplaceGlobals(logger)

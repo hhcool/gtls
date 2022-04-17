@@ -9,8 +9,9 @@ import (
 
 func TestLog(t *testing.T) {
 	log.EnableSync(&log.Option{
-		ServerId:   "123",
+		//ServerName: "123",
 		Stacktrace: zapcore.ErrorLevel,
 	})
 	log.Info("info", zap.String("test", "info"))
+	log.Infof("我是日志")
 }
