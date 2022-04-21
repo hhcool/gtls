@@ -9,15 +9,18 @@ import (
 
 var node *snowflake.Node
 
-func InitSnowflake(startTime string, machineID int64) (err error) {
+func InitSnowflake(startTime string, machineID int64) {
 	var st time.Time
+	var err error
 	st, err = time.Parse("2006-01-02", startTime)
 	if err != nil {
-		return
+		panic(err)
 	}
 	snowflake.Epoch = st.UnixNano() / 1000000
 	node, err = snowflake.NewNode(machineID)
-	return
+	if err != nil {
+		panic(err)
+	}
 }
 
 // NewSnowflake
