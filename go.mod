@@ -6,6 +6,8 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/google/uuid v1.3.0
+	github.com/gorilla/websocket v1.5.0
+	github.com/jpillora/backoff v1.0.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/shopspring/decimal v1.3.1
 	go.uber.org/zap v1.21.0
