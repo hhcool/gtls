@@ -1,4 +1,4 @@
-package wsc
+package ws
 
 import (
 	"errors"
@@ -154,7 +154,7 @@ func (wsc *Wsc) OnBinaryMessageReceived(f func(data []byte)) {
 
 // Closed
 // @Description: 返回关闭状态
-// @receiver wsc
+// @receiver ws
 // @return bool
 func (wsc *Wsc) Closed() bool {
 	wsc.WebSocket.connMu.RLock()
@@ -164,7 +164,7 @@ func (wsc *Wsc) Closed() bool {
 
 // Connect
 // @Description: 发起连接
-// @receiver wsc
+// @receiver ws
 func (wsc *Wsc) Connect() {
 	wsc.WebSocket.sendChan = make(chan *wsMsg, wsc.Config.MessageBufferSize) // 缓冲
 	b := &backoff.Backoff{
@@ -294,7 +294,7 @@ var (
 
 // SendTextMessage
 // @Description: 发送TextMessage消息
-// @receiver wsc
+// @receiver ws
 // @param message
 // @return error
 func (wsc *Wsc) SendTextMessage(message string) error {
@@ -315,7 +315,7 @@ func (wsc *Wsc) SendTextMessage(message string) error {
 
 // SendBinaryMessage
 // @Description: 发送BinaryMessage消息
-// @receiver wsc
+// @receiver ws
 // @param data
 // @return error
 func (wsc *Wsc) SendBinaryMessage(data []byte) error {
@@ -336,7 +336,7 @@ func (wsc *Wsc) SendBinaryMessage(data []byte) error {
 
 // send
 // @Description: 发送消息到连接端
-// @receiver wsc
+// @receiver ws
 // @param messageType
 // @param data
 // @return error
@@ -355,7 +355,7 @@ func (wsc *Wsc) send(messageType int, data []byte) error {
 
 // closeAndRecConn
 // @Description: 断线重连
-// @receiver wsc
+// @receiver ws
 func (wsc *Wsc) closeAndRecConn() {
 	if wsc.Closed() {
 		return
@@ -366,14 +366,14 @@ func (wsc *Wsc) closeAndRecConn() {
 
 // Close
 // @Description: 主动关闭连接
-// @receiver wsc
+// @receiver ws
 func (wsc *Wsc) Close() {
 	wsc.CloseWithMsg("")
 }
 
 // CloseWithMsg
 // @Description: 主动关闭连接，附带消息
-// @receiver wsc
+// @receiver ws
 // @param msg
 func (wsc *Wsc) CloseWithMsg(msg string) {
 	if wsc.Closed() {
@@ -388,7 +388,7 @@ func (wsc *Wsc) CloseWithMsg(msg string) {
 
 // clean
 // @Description: 清理资源
-// @receiver wsc
+// @receiver ws
 func (wsc *Wsc) clean() {
 	if wsc.Closed() {
 		return
