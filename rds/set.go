@@ -75,3 +75,16 @@ func (r *ClientStruct) SDiffStore(newKey string, key ...string) *redis.IntCmd {
 	}
 	return r.RedisClient.SDiffStore(context.Background(), newKey, key...)
 }
+
+// SIsMember
+// @Description: member是否是名称为key的set的元素
+// @receiver r
+// @param key
+// @param member
+// @return *redis.BoolCmd
+func (r *ClientStruct) SIsMember(key string, member interface{}) *redis.BoolCmd {
+	if r.IsCluster {
+		return r.RedisCluster.SIsMember(context.Background(), key, member)
+	}
+	return r.RedisClient.SIsMember(context.Background(), key, member)
+}
