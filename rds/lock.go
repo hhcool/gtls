@@ -10,12 +10,13 @@ import (
 
 /**********************LOCK 操作***********************/
 
-var unlockCh = make(chan struct{}, 0)
+var unlockCh = map[string]chan struct{}{}
 
 func (r *ClientStruct) Lock(key string, Wait bool) bool {
 	for {
 		lockSuccess, err := r.SetNX(key, NewGoroutineId(), time.Second*10).Result()
 		if err == nil && lockSuccess {
+			unlockCh[key] = make(chan struct{}, 0)
 			go r.watchDog(key)
 			return true
 		} else {
@@ -38,7 +39,9 @@ func (r *ClientStruct) UnLock(key string) {
 	if result, err := r.RunScript(script, key, NewGoroutineId()).Result(); err != nil || result == int64(0) {
 		log.Error("解锁失败", zap.Error(err))
 	} else {
-		unlockCh <- struct{}{}
+		if _, ok := unlockCh[key]; ok {
+			unlockCh[key] <- struct{}{}
+		}
 	}
 }
 func (r *ClientStruct) watchDog(key string) {
@@ -56,9 +59,11 @@ func (r *ClientStruct) watchDog(key string) {
 		case <-expTicker.C:
 			if result, err := r.RunScript(script, key, NewGoroutineId(), 10).Result(); err != nil || result == int64(0) {
 				log.Errorf("锁续期失败[%s]：%v", key, err)
+				delete(unlockCh, key)
 				return
 			}
-		case <-unlockCh:
+		case <-unlockCh[key]:
+			delete(unlockCh, key)
 			return
 		}
 	}
